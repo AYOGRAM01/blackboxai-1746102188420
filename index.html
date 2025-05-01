@@ -44,6 +44,38 @@
       background-color: #06b;
       color: #fff;
     }
+    #leaderboard {
+      max-width: 480px;
+      margin: 10px auto;
+      color: #0ff;
+      background: rgba(0,0,0,0.5);
+      border: 1px solid #0ff;
+      border-radius: 8px;
+      padding: 10px;
+      font-size: 16px;
+    }
+    #leaderboard h2 {
+      text-align: center;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+    #leaderboard ol {
+      padding-left: 20px;
+    }
+    #leaderboard button {
+      margin-top: 8px;
+      background-color: #0ff;
+      color: #000;
+      border: none;
+      border-radius: 4px;
+      padding: 4px 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    #leaderboard button:hover {
+      background-color: #06b;
+      color: #fff;
+    }
   </style>
 </head>
 <body class="flex flex-col items-center justify-center min-h-screen p-4 text-cyan-400">
@@ -55,6 +87,12 @@
     <button id="pauseButton">Pause</button>
   </div>
   <canvas id="gameCanvas" width="480" height="640" class="shadow-lg"></canvas>
+
+  <div id="leaderboard" aria-live="polite" aria-atomic="true" role="region">
+    <h2>Leaderboard</h2>
+    <ol id="leaderboardList"></ol>
+    <button id="clearLeaderboardButton">Clear Leaderboard</button>
+  </div>
 
   <!-- Audio elements for sound effects -->
   <audio id="shootSound" src="https://freesound.org/data/previews/320/320181_5260877-lq.mp3" preload="auto"></audio>
