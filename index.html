@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Space Shooting Game</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background: radial-gradient(ellipse at center, #000000 0%, #0f2027 100%);
+      overflow: hidden;
+    }
+    #gameCanvas {
+      background: #000;
+      display: block;
+      margin: 0 auto;
+      border: 2px solid #0ff;
+      border-radius: 8px;
+      position: relative;
+      z-index: 1;
+    }
+    #ui {
+      color: #0ff;
+      font-size: 18px;
+      display: flex;
+      justify-content: space-between;
+      max-width: 480px;
+      margin: 0 auto 10px;
+      font-weight: bold;
+      user-select: none;
+    }
+    #pauseButton {
+      cursor: pointer;
+      background-color: #0ff;
+      color: #000;
+      border-radius: 4px;
+      padding: 2px 8px;
+      transition: background-color 0.3s ease;
+    }
+    #pauseButton:hover {
+      background-color: #06b;
+      color: #fff;
+    }
+  </style>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen p-4 text-cyan-400">
+  <h1 class="text-4xl mb-4 font-bold tracking-widest">Space Shooting Game</h1>
+  <div id="ui">
+    <div>Score: <span id="score" class="font-mono">0</span></div>
+    <div>Lives: <span id="lives" class="font-mono">3</span></div>
+    <div>High Score: <span id="highScore" class="font-mono">0</span></div>
+    <button id="pauseButton">Pause</button>
+  </div>
+  <canvas id="gameCanvas" width="480" height="640" class="shadow-lg"></canvas>
+
+  <!-- Audio elements for sound effects -->
+  <audio id="shootSound" src="https://freesound.org/data/previews/320/320181_5260877-lq.mp3" preload="auto"></audio>
+  <audio id="explosionSound" src="https://freesound.org/data/previews/174/174027_324703-lq.mp3" preload="auto"></audio>
+  <audio id="gameOverSound" src="https://freesound.org/data/previews/331/331912_324703-lq.mp3" preload="auto"></audio>
+
+  <script src="main.js"></script>
+</body>
+</html>
