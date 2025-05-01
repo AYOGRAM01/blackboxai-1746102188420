@@ -33,6 +33,8 @@ let rapidFire = false;
 let rapidFireEndTime = 0;
 let boss = null;
 let bossActive = false;
+let highScore = 0;
+let leaderboard = [];
 
 // Load images
 const playerImg = new Image();
@@ -81,6 +83,12 @@ document.getElementById('pauseButton').addEventListener('click', () => {
     gameLoop();
     spawnEnemiesLoop();
   }
+});
+
+document.getElementById('clearLeaderboardButton').addEventListener('click', () => {
+  leaderboard = [];
+  localStorage.removeItem('spaceShooterLeaderboard');
+  updateLeaderboard();
 });
 
 // Classes
@@ -366,6 +374,11 @@ function activatePowerUp() {
 // Update score display
 function updateScore() {
   document.getElementById('score').textContent = score;
+  if (score > highScore) {
+    highScore = score;
+    localStorage.setItem('spaceShooterHighScore', highScore);
+    updateHighScore();
+  }
 }
 
 // Update lives display
@@ -373,11 +386,56 @@ function updateLives() {
   document.getElementById('lives').textContent = lives;
 }
 
+// Update high score display
+function updateHighScore() {
+  document.getElementById('highScore').textContent = highScore;
+}
+
+// Update leaderboard display
+function updateLeaderboard() {
+  const leaderboardList = document.getElementById('leaderboardList');
+  leaderboardList.innerHTML = '';
+  leaderboard.forEach(entry => {
+    const li = document.createElement('li');
+    li.textContent = `${entry.name}: ${entry.score}`;
+    leaderboardList.appendChild(li);
+  });
+}
+
+// Save score to leaderboard
+function saveScoreToLeaderboard(name) {
+  leaderboard.push({ name, score });
+  leaderboard.sort((a, b) => b.score - a.score);
+  if (leaderboard.length > 10) {
+    leaderboard = leaderboard.slice(0, 10);
+  }
+  localStorage.setItem('spaceShooterLeaderboard', JSON.stringify(leaderboard));
+  updateLeaderboard();
+}
+
+// Load leaderboard from localStorage
+function loadLeaderboard() {
+  const stored = localStorage.getItem('spaceShooterLeaderboard');
+  if (stored) {
+    leaderboard = JSON.parse(stored);
+    updateLeaderboard();
+  }
+}
+
+// Prompt for player name and save score on game over
+function promptForNameAndSaveScore() {
+  const name = prompt('Game Over! Enter your name for the leaderboard:', 'Player');
+  if (name) {
+    saveScoreToLeaderboard(name);
+  }
+}
+
 // End game
 function endGame() {
   gameOver = true;
   gameOverSound.play();
   document.getElementById('pauseButton').disabled = true;
+  promptForNameAndSaveScore();
 }
 
 // Draw game elements
@@ -468,15 +526,23 @@ function spawnEnemiesLoop() {
   requestAnimationFrame(spawnEnemiesLoop);
 }
 
+// Initialize high score and leaderboard from localStorage
+function initHighScore() {
+  const storedHighScore = localStorage.getItem('spaceShooterHighScore');
+  if (storedHighScore) {
+    highScore = parseInt(storedHighScore, 10);
+    updateHighScore();
+  }
+  loadLeaderboard();
+}
+
 // Start the game
 playerImg.onload = () => {
   bossImg.onload = () => {
     enemyImgs[enemyImgs.length - 1].onload = () => {
+      initHighScore();
       gameLoop();
       spawnEnemiesLoop();
     };
   };
 };
-
-updateScore();
-updateLives();
